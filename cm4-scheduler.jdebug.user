@@ -1,0 +1,14 @@
+OpenWindow="Memory Content1", DockArea=BOTTOM, x=0, y=0, w=680, h=137, FilterBarShown=0, 
+OpenWindow="Registers", DockArea=RIGHT, x=0, y=3, w=488, h=113, FilterBarShown=0, 
+OpenWindow="Console", DockArea=BOTTOM, x=1, y=0, w=676, h=137, FilterBarShown=0, 
+OpenWindow="Watched Data", DockArea=RIGHT, x=0, y=0, w=488, h=143, FilterBarShown=0, 
+OpenWindow="Breakpoints", DockArea=LEFT, x=0, y=0, w=277, h=210, FilterBarShown=0, 
+OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=277, h=303, FilterBarShown=1, 
+OpenWindow="Call Stack", DockArea=RIGHT, x=0, y=1, w=488, h=152, FilterBarShown=0, 
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=2, w=488, h=93, FilterBarShown=0, ExecCountersShown=0
+OpenToolbar="Debug", Floating=0, x=0, y=0
+TableHeader="Registers", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[125;115;252]
+TableHeader="Watched Data", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Size";"Refresh";"Type";"Scope"], ColWidths=[259;84;95;48;67;115;59]
+TableHeader="Breakpoints", SortCol="Location", SortOrder="ASCENDING", VisibleCols=["State";"Location";"Permitted Impl.";"Actual Impl.";"Context";"Task Filter";"Skip #";"Condition";"Script Callback"], ColWidths=[53;215;106;88;425;80;58;76;105]
+TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[123;69;48;57;182]
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Stack Info";"Source"], ColWidths=[165;100;223]
