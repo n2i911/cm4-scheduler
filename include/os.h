@@ -2,8 +2,9 @@
 #define _OS_H
 
 /* cm4-scheduler configurations */
-#define CONFIG_MAX_TASK		4
-#define CONFIG_MAX_TASKSIZE	64	/* 64*4 = 256 bytes */
+#define CONFIG_MAX_TASK		6
+#define CONFIG_MAX_STACKSIZE	128	/* unit in word, 128*4 = 512 bytes */
+#define CONFIG_DEBUG		1
 
 #include <stdlib.h>
 #include <string.h>

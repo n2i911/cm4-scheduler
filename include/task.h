@@ -1,10 +1,33 @@
 #ifndef _TASK_H
 #define _TASK_H
 
+typedef struct
+{
+	uint32_t stack[CONFIG_MAX_STACKSIZE-16];
+	uint32_t r11;
+	uint32_t r10;
+	uint32_t r9;
+	uint32_t r8;
+	uint32_t r7;
+	uint32_t r6;
+	uint32_t r5;
+	uint32_t r4;
+	uint32_t r0;
+	uint32_t r1;
+	uint32_t r2;
+	uint32_t r3;
+	uint32_t r12;
+	uint32_t lr;
+	uint32_t pc;
+	uint32_t psr;
+
+} s_stack;
+
 enum e_task_status
 {
-	TASK_STATUS_IDLE = 0,
-	TASK_STATUS_ACTIVE
+	TASK_STATUS_RUNNING = 0,
+	TASK_STATUS_READY,
+	TASK_STATUS_WAITING
 };
 
 typedef struct
@@ -34,7 +57,7 @@ extern enum e_os_status os_status;
 extern s_tcb_table tcb_table;
 extern s_tcb *curr_task;
 extern s_tcb *next_task;
-extern uint32_t task_stack[][CONFIG_MAX_TASKSIZE];
+extern s_stack task_stack[];
 
 int32_t task_init(void);
 

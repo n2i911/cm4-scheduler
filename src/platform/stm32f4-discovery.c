@@ -73,25 +73,25 @@ int32_t __platform_create_tasks(void)
 	int32_t val = -1;
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_12,
-			task_stack[0], sizeof(task_stack[0]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_13,
-			task_stack[1], sizeof(task_stack[1]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_14,
-			task_stack[2], sizeof(task_stack[2]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_15,
-			task_stack[3], sizeof(task_stack[3]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
 
 	if (val == -1)
 		dead();
