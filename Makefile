@@ -70,7 +70,7 @@ CFLAGS = -fno-common \
 	-g3 \
 	-Wall \
 	-Werror \
-	-std=c11 \
+	-std=gnu11 \
 	$(FLAGS) \
 	$(INC) \
 	$(DEFS)

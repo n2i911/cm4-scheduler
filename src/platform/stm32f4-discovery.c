@@ -73,25 +73,25 @@ int32_t __platform_create_tasks(void)
 	int32_t val = -1;
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_12,
-		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_13,
-		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_14,
-		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)
 		dead();
 
 	val = task_create(handler_toggle_led, (void *)GPIO_PIN_15,
-		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)
 		dead();

@@ -28,9 +28,12 @@ int main(void)
 	if (val != 0)
 		dead();
 
-	/* Create idle task */
+	/*
+	 * Create idle task, which will stay in system forever.
+	 * Don't kill it.
+	 */
 	val = task_create(handler_idle, NULL,
-		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]));
+		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_MAX_PRIORITY);
 	if (val != 0)
 		dead();
 
@@ -45,31 +48,57 @@ int main(void)
 	while(1);
 }
 
-void SysTick_Handler(void)
+void _schedule(void)
 {
+	uint32_t priority = 0;
+	s_tcb *tcb = NULL;
+
 #if CONFIG_DEBUG
 	uint32_t cpid __attribute__((unused));
 	uint32_t npid __attribute__((unused));
+
+	cpid = curr_task->pid;
 #endif
 
-	/* choose the next task */
-	curr_task = &tcb_table.tcb[tcb_table.current_task];
+	/* select the highest priority task */
+	priority = task_highest_priority();
+
+	/* change status of current task to ready and add to ready queue */
 	curr_task->status = TASK_STATUS_READY;
+	list_add_tail(&ready_queue[curr_task->priority], &curr_task->list_node);
+
+	/* select the next task, set as current task and remove from ready queue */
+	tcb = list_first_entry(&ready_queue[priority], s_tcb, list_node);
+	list_del(&tcb->list_node);
+	curr_task = tcb;
+
+#if CONFIG_DEBUG
+	npid = curr_task->pid;
+#endif
+}
+
+void SysTick_Handler(void)
+{
+	uint32_t priority = 0;
+
+#if CONFIG_DEBUG
+	uint32_t cpid __attribute__((unused));
+#endif
+
+	/* select the highest priority task */
+	priority = task_highest_priority();
 
 #if CONFIG_DEBUG
 	cpid = curr_task->pid;
 #endif
 
-	tcb_table.current_task++;
-	if (tcb_table.current_task >= tcb_table.count)
-		tcb_table.current_task = 0;
-
-	next_task = &tcb_table.tcb[tcb_table.current_task];
-	next_task->status = TASK_STATUS_RUNNING;
-#if CONFIG_DEBUG
-	npid = next_task->pid;
-#endif
-
-	/* Trigger PendSV which performs the actual context switch */
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	/*
+	 * If there is other task which priority is higher or equal to current task's,
+	 * doing context switch.
+	 */
+	if (priority <= curr_task->priority)
+	{
+		/* Trigger PendSV which performs the actual context switch */
+		SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	}
 }

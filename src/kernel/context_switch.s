@@ -20,8 +20,13 @@ PendSV_Handler:
 	ldr r2, [r1]
 	str r0, [r2]
 
+	/* select the next task */
+	push {lr}
+	bl _schedule
+	pop {lr}
+
 	/* Get sp from next task's stack */
-	ldr r1, =next_task
+	ldr r1, =curr_task
 	ldr r2, [r1]
 	ldr r0, [r2]
 
