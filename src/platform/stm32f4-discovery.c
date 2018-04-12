@@ -42,9 +42,69 @@ void __platform_init(void)
 	platform_led_init();
 
 	platform_serial_init();
+
+	platform_btn_init();
 }
 
 void handler_toggle_led(void *p_param)
+{
+	uint32_t pin = (uint32_t)p_param;
+
+	unsigned time = pin % 5;
+
+	while (1)
+	{
+		/* Toggle off all leds
+		 * LD3 (orange): PD13
+		 * LD4 (green): PD12
+		 * LD5 (red): PD14
+		 * LD6 (blue): PD15
+		 * */
+
+		/* Toggle off all leds */
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+
+		/* Toggle on the led */
+		HAL_GPIO_WritePin(GPIOD, pin, GPIO_PIN_SET);
+
+		sleep(time);
+	}
+}
+
+void handler_toggle_led_with_delay(void *p_param)
+{
+	uint32_t pin = (uint32_t)p_param;
+
+	unsigned time = pin % 5;
+
+	while (1)
+	{
+		/* Toggle off all leds
+		 * LD3 (orange): PD13
+		 * LD4 (green): PD12
+		 * LD5 (red): PD14
+		 * LD6 (blue): PD15
+		 * */
+
+		/* Toggle off all leds */
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+
+		/* Toggle on the led */
+		HAL_GPIO_WritePin(GPIOD, pin, GPIO_PIN_SET);
+
+		delay(time * 1000000);
+
+		task_resumeAll();
+	}
+}
+
+void handler_toggle_led_with_suspend(void *p_param)
 {
 	uint32_t pin = (uint32_t)p_param;
 
@@ -65,6 +125,8 @@ void handler_toggle_led(void *p_param)
 
 		/* Toggle on the led */
 		HAL_GPIO_WritePin(GPIOD, pin, GPIO_PIN_SET);
+
+		task_suspend(NULL);
 	}
 }
 
@@ -84,13 +146,13 @@ int32_t __platform_create_tasks(void)
 	if (val == -1)
 		dead();
 
-	val = task_create(handler_toggle_led, (void *)GPIO_PIN_14,
+	val = task_create(handler_toggle_led_with_delay, (void *)GPIO_PIN_14,
 		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)
 		dead();
 
-	val = task_create(handler_toggle_led, (void *)GPIO_PIN_15,
+	val = task_create(handler_toggle_led_with_suspend, (void *)GPIO_PIN_15,
 		(uint32_t *)&task_stack[tcb_table.count], sizeof(task_stack[tcb_table.count]), CONFIG_DEFAULT_PRIORITY);
 
 	if (val == -1)

@@ -2,6 +2,7 @@
 #define _OS_H
 
 /* cm4-scheduler configurations */
+#define CONFIG_SYSTICK		10	/* The number of Systick exception per second */
 #define CONFIG_MAX_TASK		6
 #define CONFIG_MAX_STACKSIZE	128	/* unit in word, 128*4 = 512 bytes */
 #define CONFIG_DEBUG		1
@@ -19,5 +20,6 @@
 #include "list.h"
 #include "kernel.h"
 #include "task.h"
+#include "system.h"
 
 #endif

@@ -30,6 +30,14 @@ enum e_task_status
 	TASK_STATUS_WAITING
 };
 
+enum e_task_wait_reason
+{
+	TASK_WAIT_TIME = 0,
+	TASK_WAIT_EVENT,
+	TASK_WAIT_MAX
+
+};
+
 typedef struct
 {
 	volatile uint32_t *sp;
@@ -38,6 +46,8 @@ typedef struct
 	enum e_task_status status;
 	volatile uint32_t pid;
 	volatile uint32_t priority;
+	volatile uint32_t timeup;
+	enum e_task_wait_reason reason;
 	struct s_list_node list_node;
 } s_tcb;
 
@@ -61,7 +71,7 @@ extern s_tcb *curr_task;
 extern s_tcb *next_task;
 extern s_stack task_stack[];
 extern struct s_list_node ready_queue[];
-extern struct s_list_node waiting_queue;
+extern struct s_list_node waiting_queue[];
 
 int32_t task_init(void);
 

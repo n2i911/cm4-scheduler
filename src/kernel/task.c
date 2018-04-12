@@ -5,7 +5,7 @@ s_tcb *curr_task;
 s_tcb *next_task;
 s_stack task_stack[CONFIG_MAX_TASK];
 struct s_list_node ready_queue[CONFIG_MAX_PRIORITY+1];
-struct s_list_node waiting_queue;
+struct s_list_node waiting_queue[TASK_WAIT_MAX];
 
 int32_t task_init(void)
 {
@@ -23,7 +23,10 @@ int32_t task_init(void)
 	/*
 	 * initial the ready queue and waiting queue
 	 */
-	init_list_node(&waiting_queue);
+	for (i = 0; i < TASK_WAIT_MAX; i++)
+	{
+		init_list_node(&waiting_queue[i]);
+	}
 
 	for (i = 0; i <= CONFIG_MAX_PRIORITY; i++)
 	{
@@ -149,7 +152,7 @@ int32_t task_start(void)
 	NVIC_SetPriority(SysTick_IRQn, 0x00);
 
 	/* Start SysTick */
-	SysTick_Config(SystemCoreClock);
+	SysTick_Config(SystemCoreClock/CONFIG_SYSTICK);
 
 	/* Set PSP to top of task */
 	__set_PSP((uint32_t)curr_task->sp + (16*4));
